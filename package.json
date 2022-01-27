@@ -1,0 +1,28 @@
+{
+  "name": "just-tech-news",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jiryeah/Just-Tech-News.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jiryeah/Just-Tech-News/issues"
+  },
+  "homepage": "https://github.com/Jiryeah/Just-Tech-News#readme",
+  "start": "node server.js",
+  "dependencies": {
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.14.1"
+  }
+}
