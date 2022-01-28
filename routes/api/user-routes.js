@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { User } = require('../../models');
 
 // GET /api/users
+//* Retrieves all users
 router.get('/', (req, res) => {
   // Access our User model and run .findAll() method)
   //* find.All() is the JS equivalent of SQL SELECT * FROM user;.
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/users/1
+//* Finds one user by id
 router.get('/:id', (req, res) => {
   //* findOne() w/ 'where' identifier, is the JS equivalent of SQL
   //* SELECT * FROM users WHERE id = 1;.
@@ -40,6 +42,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/users
+//* Creates a new user.
 router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   //* creat() methods allows use to insert data; similar to SQL
@@ -57,7 +60,34 @@ router.post('/', (req, res) => {
   });
 });
 
+// User login
+//* Used POST instead of GET because the GET method carries the request parameter appended in the URL string,
+//* whereas the POST method carries the request parameter in req.body, which makes it a more secure way to send client
+//* from the user to the server.
+router.post(`/login`, (req, res) => {
+// expects {email: 'lernantino@gmail.com', password: 'password1234'}
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  }).then(dbUserData => {
+    if (!dbUserData) {
+      res.status(400).json({ message: `No user with that email address! `});
+      return;
+    }
+
+    const validPassword = dbUserData.checkPassword(req.body.password);
+    if (!validPassword) {
+      res.status(400).json({ message: `Incorrect Password` });
+      return;
+    }
+    
+    res.json({ user: dbUserData, message: ` You are now logged in!` });
+  });
+});
+
 // PUT /api/users/1
+//* Allows user to update by their info id 
 router.put('/:id', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
@@ -85,6 +115,7 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE /api/users/1
+//* Allows user to delete their information, uses the id to identify the user. 
 router.delete('/:id', (req, res) => {
   //* destroy() method w/ 'where' identifier, allows us to delete the specified data.
   User.destroy({
