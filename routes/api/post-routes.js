@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
     //* because Sequelize has a default setting of camelcase.
     attributes: [`id`, `post_url`, `title`, `created_at`],
     order: [[`created_at`, `DESC`]],
+    //* We're including the User model w/ it 'username' attribute.
     include: [
       {
         model: User,
