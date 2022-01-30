@@ -3,7 +3,6 @@ const { Post, User } = require(`../../models`);
 
 // get all users
 router.get("/", (req, res) => {
-  console.log("======================");
   Post.findAll({
     // Query configuration
     //* since 'underscored: true,' we will use the underscore naming convention,
@@ -11,12 +10,13 @@ router.get("/", (req, res) => {
     attributes: [`id`, `post_url`, `title`, `created_at`],
     order: [[`created_at`, `DESC`]],
     //* We're including the User model w/ it 'username' attribute.
+    //* Rather than use SQL JOIN statements, this include option is more streamlined.
     include: [
       {
         model: User,
-        attributes: [`username`],
-      },
-    ],
+        attributes: [`username`]
+      }
+    ]
   })
     .then((dbPostData) => res.json(dbPostData))
     .catch((err) => {

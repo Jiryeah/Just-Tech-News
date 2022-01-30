@@ -21,4 +21,4 @@ sequelize.sync({ force: false }).then(() => {
 
 
 
-//* ORM = Object Relation Mapping. ORM for Node.js is Sequalize.
+

@@ -6,12 +6,11 @@ const Post = require(`./Post`)
 //* This foreign key ties both tables together.
 //* Almost like a 'common denominator'. 
 User.hasMany(Post, {
-  foreignKey: `user_id`,
+  foreignKey: `user_id`
 });
 
 Post.belongsTo(User, {
-  foreignKey: `user_id`,
-  onDelete:`cascade`,
+  foreignKey: `user_id`
 });
 
 //* Exports an object as a property
