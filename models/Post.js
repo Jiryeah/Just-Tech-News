@@ -2,7 +2,34 @@ const { Model, DataTypes } = require(`sequelize`);
 const sequelize = require(`../config/connection`);
 
 // Create our Post model
-class Post extends Model {}
+class Post extends Model {
+  //* static indicate that the upvote method is
+  //* based on the Post model.
+  static upvote(body, models) {
+    return models.Vote.create({
+      user_id: body.user_id,
+      post_id: body.post_id,
+    }).then(() => {
+      return Post.findOne({
+        where: {
+          id: body.post_id,
+        },
+        attributes: [
+          `id`,
+          `post_url`,
+          `title`,
+          `created_at`,
+          [
+            sequelize.literal(
+              `(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)`
+            ),
+            `vote_count`,
+          ],
+        ],
+      });
+    });
+  }
+}
 
 // create fields/columns for Post model
 Post.init(
@@ -27,8 +54,8 @@ Post.init(
     user_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: "user",
-        key: "id",
+        model: `user`,
+        key: `id`,
       },
     },
   },
@@ -36,7 +63,7 @@ Post.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: "post",
+    modelName: `post`,
   }
 );
 
