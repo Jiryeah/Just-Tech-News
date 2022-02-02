@@ -1,7 +1,7 @@
-const router = require('express').Router();
-const homeRoutes = require(`./home-routes`);
+const router = require("express").Router();
 
-const apiRoutes = require('./api');
+const apiRoutes = require("./api");
+const homeRoutes = require(`./home-routes`);
 
 //* Collects packaged API endpoints and prefixes them with '/api'.
 router.use(`/api`, apiRoutes);

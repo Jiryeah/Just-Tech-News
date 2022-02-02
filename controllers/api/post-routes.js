@@ -1,10 +1,9 @@
-const sequelize = require(`../../config/connection`);
-//* 'router' is for naming convention and ea
 const router = require(`express`).Router();
+const sequelize = require(`../../config/connection`);
 const { Post, User, Vote, Comment } = require(`../../models`);
 
 // get all users
-router.get("/", (req, res) => {
+router.get(`/`, (req, res) => {
   Post.findAll({
     // Query configuration
     attributes: [
@@ -23,11 +22,11 @@ router.get("/", (req, res) => {
     include: [
       {
         model: Comment,
-        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+        attributes: [`id`, `comment_text`, `post_id`, `user_id`, `created_at`],
         include: {
           model: User,
-          attributes: ['username']
-        }
+          attributes: [`username`],
+        },
       },
       {
         model: User,
@@ -62,11 +61,11 @@ router.get(`/:id`, (req, res) => {
     include: [
       {
         model: Comment,
-        attributes: ['id', 'comment_text', 'created_at'],
+        attributes: [`id`, `comment_text`, `created_at`],
         include: {
           model: Post,
-          attributes: ['title']
-        }
+          attributes: [`title`],
+        },
       },
       {
         model: User,
@@ -101,13 +100,13 @@ router.post(`/`, (req, res) => {
 });
 
 // PUT /api/posts/upvote
-router.put('/upvote', (req, res) => {
+router.put(`/upvote`, (req, res) => {
   // custom static method created in models/Post.js
   Post.upvote(req.body, { Vote })
-    .then(updatedPostData => res.json(updatedPostData))
-    .catch(err => {
+    .then((updatedPostData) => res.json(updatedPostData))
+    .catch((err) => {
       console.log(err);
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
@@ -136,6 +135,7 @@ router.put(`/:id`, (req, res) => {
 });
 
 router.delete(`/:id`, (req, res) => {
+  console.log(`id`, req.params.id);
   Post.destroy({
     where: {
       id: req.params.id,

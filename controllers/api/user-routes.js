@@ -1,9 +1,9 @@
-const router = require("express").Router();
-const { User, Post, Vote, Comment } = require("../../models");
+const router = require(`express`).Router();
+const { User, Post, Comment, Vote } = require(`../../models`);
 
 // GET /api/users
 //* Retrieves all users
-router.get("/", (req, res) => {
+router.get(`/`, (req, res) => {
   // Access our User model and run .findAll() method)
   //* find.All() is the JS equivalent of SQL SELECT * FROM user;.
   User.findAll({
@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
 
 // GET /api/users/1
 //* Finds one user by id
-router.get("/:id", (req, res) => {
+router.get(`/:id`, (req, res) => {
   //* findOne() w/ 'where' identifier, is the JS equivalent of SQL
   //* SELECT * FROM users WHERE id = 1;.
   User.findOne({
@@ -30,19 +30,27 @@ router.get("/:id", (req, res) => {
     include: [
       {
         model: Post,
-        attributes: ["id", "title", "post_url", "created_at"],
+        attributes: [`id`, `title`, `post_url`, `created_at`],
+      },
+      {
+        model: Comment,
+        attributes: [`id`, `comment_text`, `created_at`],
+        include: {
+          model: Post,
+          attributes: [`title`],
+        },
       },
       {
         model: Post,
-        attributes: ["title"],
+        attributes: [`title`],
         through: Vote,
-        as: "voted_posts",
+        as: `voted_posts`,
       },
     ],
   })
     .then((dbUserData) => {
       if (!dbUserData) {
-        res.status(404).json({ message: "No user found with this id" });
+        res.status(404).json({ message: `No user found with this id` });
         return;
       }
       res.json(dbUserData);
@@ -55,7 +63,7 @@ router.get("/:id", (req, res) => {
 
 // POST /api/users
 //* Creates a new user.
-router.post("/", (req, res) => {
+router.post(`/`, (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
   //* creat() methods allows use to insert data; similar to SQL
   //* INSERT INTO users (username, email, password)
@@ -64,15 +72,20 @@ router.post("/", (req, res) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-  }).then((dbUserData) => {
-    req.session.save(() => {
-      req.session.user_id = dbUserData.id;
-      req.session.username = dbUserData.username;
-      req.session.loggedIn = true;
+  })
+    .then((dbUserData) => {
+      req.session.save(() => {
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
+        req.session.loggedIn = true;
 
-      res.json(dbUserData);
+        res.json(dbUserData);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
     });
-  });
 });
 
 // User login
@@ -96,12 +109,11 @@ router.post(`/login`, (req, res) => {
       res.status(400).json({ message: `Incorrect Password!` });
       return;
     }
-        req.session.save(() => {
+    req.session.save(() => {
       // declare session variables
       req.session.user_id = dbUserData.id;
       req.session.username = dbUserData.username;
       req.session.loggedIn = true;
-
 
       res.json({ user: dbUserData, message: ` You are now logged in!` });
     });
@@ -120,13 +132,13 @@ router.post(`/logout`, (req, res) => {
 
 // PUT /api/users/1
 //* Allows user to update by their info id
-router.put("/:id", (req, res) => {
+router.put(`/:id`, (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
   //* update() method combines the parameters for creating data & looking up data.
   //* We pass req.body to provide the new data we want to use in the update & req.params.id to indicate where exactly we want that new data to be used.
-  //* SQL equivalent = UPDATE users SET username = "Lernantino", email = "lernantino@gmail.com", password = "newPassword1234" WHERE id = 1;.
+  //* SQL equivalent = UPDATE users SET username = `Lernantino`, email = `lernantino@gmail.com`, password = `newPassword1234` WHERE id = 1;.
   User.update(req.body, {
     individualHooks: true,
     where: {
@@ -135,7 +147,7 @@ router.put("/:id", (req, res) => {
   })
     .then((dbUserData) => {
       if (!dbUserData[0]) {
-        res.status(404).json({ message: "No user found with this id" });
+        res.status(404).json({ message: `No user found with this id` });
         return;
       }
       res.json(dbUserData);
@@ -148,7 +160,7 @@ router.put("/:id", (req, res) => {
 
 // DELETE /api/users/1
 //* Allows user to delete their information, uses the id to identify the user.
-router.delete("/:id", (req, res) => {
+router.delete(`/:id`, (req, res) => {
   //* destroy() method w/ 'where' identifier, allows us to delete the specified data.
   User.destroy({
     where: {
@@ -157,7 +169,7 @@ router.delete("/:id", (req, res) => {
   })
     .then((dbUserData) => {
       if (!dbUserData) {
-        res.status(404).json({ message: "No user found with this id" });
+        res.status(404).json({ message: `No user found with this id` });
         return;
       }
       res.json(dbUserData);
