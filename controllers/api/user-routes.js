@@ -90,7 +90,7 @@ router.post(`/`, (req, res) => {
 
 // User login
 //* Used POST instead of GET because the GET method carries the request parameter appended in the URL string,
-//* whereas the POST method carries the request parameter in req.body, which makes it a more secure way to send client
+//* whereas the POST method carries the request parameter in req.body, which makes it a more secure way to send client information
 //* from the user to the server.
 router.post(`/login`, (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
@@ -131,13 +131,10 @@ router.post(`/logout`, (req, res) => {
 });
 
 // PUT /api/users/1
-//* Allows user to update by their info id
 router.put(`/:id`, (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
-  //* update() method combines the parameters for creating data & looking up data.
-  //* We pass req.body to provide the new data we want to use in the update & req.params.id to indicate where exactly we want that new data to be used.
   //* SQL equivalent = UPDATE users SET username = `Lernantino`, email = `lernantino@gmail.com`, password = `newPassword1234` WHERE id = 1;.
   User.update(req.body, {
     individualHooks: true,
@@ -159,9 +156,7 @@ router.put(`/:id`, (req, res) => {
 });
 
 // DELETE /api/users/1
-//* Allows user to delete their information, uses the id to identify the user.
 router.delete(`/:id`, (req, res) => {
-  //* destroy() method w/ 'where' identifier, allows us to delete the specified data.
   User.destroy({
     where: {
       id: req.params.id,
