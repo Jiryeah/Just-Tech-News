@@ -13,7 +13,7 @@ const signupFormHandler = async (event) => {
         email,
         password,
       }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
     // check the response status
     if (response.ok) {
