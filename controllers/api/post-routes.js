@@ -76,7 +76,7 @@ router.get(`/:id`, (req, res) => {
   })
     .then((dbPostData) => {
       if (!dbPostData) {
-        res.status(400).json({ message: `No post found with this id` });
+        res.status(404).json({ message: `No post found with this id` });
         return;
       }
       res.json(dbPostData);
@@ -88,16 +88,18 @@ router.get(`/:id`, (req, res) => {
 });
 
 router.post(`/`, (req, res) => {
-  Post.create({
-    title: req.body.title,
-    post_url: req.body.post_url,
-    user_id: req.body.user_id,
-  })
-    .then((dbPostData) => res.json(dbPostData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+  if (req.session) {
+    Post.create({
+      title: req.body.title,
+      post_url: req.body.post_url,
+      user_id: req.body.user_id,
+    })
+      .then((dbPostData) => res.json(dbPostData))
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  }
 });
 
 // PUT /api/posts/upvote

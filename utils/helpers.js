@@ -20,4 +20,3 @@ module.exports = {
       .split(`?`)[0];
   },
 };
-dat;

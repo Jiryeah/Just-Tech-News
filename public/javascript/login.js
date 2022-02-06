@@ -30,9 +30,26 @@ const loginFormHandler = async (event) => {
   const email = document.querySelector(`#email-login`).value.trim();
   const password = document.querySelector(`#password-login`).value.trim();
 
-  if (email && password) {
+  // if (email && password) {
+  //   const response = await fetch(`/api/users/login`, {
+  //     method: `post`,
+  //     body: JSON.stringify({
+  //       email,
+  //       password,
+  //     }),
+  //     headers: { "Content-type": "application/json" },
+  //   });
+  //   if (response.ok) {
+  //     document.location.replace(`/dashboard`);
+  //     // console.log(`success`);
+  //   } else {
+  //     alert(response.statusText);
+  //   }
+  // }
+
+  try {
     const response = await fetch(`/api/users/login`, {
-      method: `post`,
+      method: `POST`,
       body: JSON.stringify({
         email,
         password,
@@ -40,11 +57,10 @@ const loginFormHandler = async (event) => {
       headers: { "Content-type": "application/json" },
     });
     if (response.ok) {
-      document.location.replace(`/`);
-      // console.log(`success`);
-    } else {
-      alert(response.statusText);
+      document.location.replace(`/dashboard`);
     }
+  } catch (error) {
+    console.log(error);
   }
 };
 
