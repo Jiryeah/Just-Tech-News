@@ -7,12 +7,12 @@ const Comment = require(`./Comments`);
 // create associations
 Comment.belongsTo(User, {
   foreignKey: "user_id",
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 Comment.belongsTo(Post, {
   foreignKey: "post_id",
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 //* This foreign key ties both tables together.
@@ -27,7 +27,7 @@ User.hasMany(Vote, {
 
 User.hasMany(Comment, {
   foreignKey: "user_id",
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 //* will allow us to see how many posts the user has voted on.
@@ -36,7 +36,7 @@ User.belongsToMany(Post, {
   through: Vote,
   as: "voted_posts",
   foreignKey: `user_id`,
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 Post.hasMany(Comment, {
@@ -49,7 +49,7 @@ Post.hasMany(Vote, {
 
 Post.belongsTo(User, {
   foreignKey: `user_id`,
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 //* will allow us to see how many votes a user has placed on a post
@@ -57,18 +57,20 @@ Post.belongsToMany(User, {
   through: Vote,
   as: `voted_posts`,
   foreignKey: `post_id`,
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 Vote.belongsTo(User, {
   foreignKey: `user_id`,
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 Vote.belongsTo(Post, {
   foreignKey: `post_id`,
-  onDelete: 'SET NULL'
+  onDelete: "SET NULL",
 });
 
 //* Exports an object as a property
 module.exports = { User, Post, Vote, Comment };
+
+//TODO: crosscheck the relationships to ensure delete functionality isn't the cause of the fetch error.
