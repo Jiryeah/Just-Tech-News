@@ -12,7 +12,7 @@ Comment.belongsTo(User, {
 
 Comment.belongsTo(Post, {
   foreignKey: "post_id",
-  onDelete: "SET NULL",
+  onDelete: "CASCADE",
 });
 
 //* This foreign key ties both tables together.
