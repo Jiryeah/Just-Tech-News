@@ -12,7 +12,7 @@ This application is a blog that allows users to comment, like, and share ideas r
 
 ## Usage
 
-Created as the in-class project at UTSA to teach Object Relational Mapping with Sequelize and proper 'User' model concepts.
+Created as the in-class project at UTSA to teach ORM (Object Relational Mapping) with Sequelize, proper 'User' model concepts, and the MVC (Model, View, Controller) development structure.
 
 ## Contributing
 
