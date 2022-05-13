@@ -11,7 +11,7 @@ const loginFormHandler = async (event) => {
         email,
         password,
       }),
-      headers: { "Content-type": "application/json" },
+      headers: { 'Content-type': 'application/json' },
     });
     if (response.ok) {
       document.location.replace(`/dashboard`);
@@ -37,7 +37,7 @@ const signupFormHandler = async (event) => {
         email,
         password,
       }),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
     // check the response status
     if (response.ok) {
@@ -48,9 +48,5 @@ const signupFormHandler = async (event) => {
   }
 };
 
-document
-  .querySelector(`.login-form`)
-  .addEventListener(`submit`, loginFormHandler);
-document
-  .querySelector(`.signup-form`)
-  .addEventListener(`submit`, signupFormHandler);
+document.querySelector(`.login-form`).addEventListener(`submit`, loginFormHandler);
+document.querySelector(`.signup-form`).addEventListener(`submit`, signupFormHandler);
